@@ -5,122 +5,7 @@
   <title>Temple des Conneries</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Unbounded:wght@600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --main-cyan: #60e4ed;
-      --dark-cyan: #16717e;
-      --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      --bg-card: rgba(255, 255, 255, 0.05);
-      --text-light: #e0f7fa;
-      --accent: #79e8f5;
-    }
-
-    body {
-      margin: 2rem;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-gradient);
-      color: var(--text-light);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      max-width: 800px;
-      background: var(--bg-card);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 2.5em;
-      box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
-      text-align: center;
-      border: 2px solid var(--main-cyan);
-    }
-
-    h1 {
-      font-family: 'Unbounded', cursive;
-      font-size: 2.5em;
-      margin-bottom: 0.5em;
-      color: var(--main-cyan);
-    }
-
-    h2 {
-      color: var(--accent);
-      margin-top: 2em;
-      font-size: 1.6em;
-    }
-
-    p, li {
-      font-size: 1.05em;
-      line-height: 1.6em;
-    }
-
-    ul {
-      text-align: left;
-      padding-left: 1.2em;
-    }
-
-    li::marker {
-      color: var(--main-cyan);
-    }
-
-    li {
-      margin: 1em 0;
-      position: relative;
-      padding-left: 1.2em;
-    }
-
-    blockquote {
-      font-style: italic;
-      background-color: rgba(0, 255, 255, 0.05);
-      border-left: 4px solid var(--main-cyan);
-      padding: 1em;
-      margin: 2em 0;
-      font-size: 1.1em;
-    }
-
-    .accept-button {
-      background-color: var(--accent);
-      border: none;
-      color: #002b36;
-      padding: 1em 2em;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1.1em;
-      margin-top: 2em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .accept-button:hover {
-      background-color: #00bcd4;
-      transform: scale(1.05);
-    }
-
-    .glow {
-      text-shadow: 0 0 8px #00ffff, 0 0 12px #00e0ff;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      pointer-events: none;
-      z-index: 100;
-    }
-
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 10px #00ffff; }
-      50% { box-shadow: 0 0 20px #00ffff; }
-    }
-
-    .container:hover {
-      animation: pulse 2s infinite;
-    }
-  </style>
+  <link href="./css/style.css" rel="stylesheet">
 </head>
 <body>
       <canvas id="fairy-canvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:999;"></canvas>
@@ -140,7 +25,7 @@
     <h2>⛔ Sanctions divines</h2>
     <ul>
       <li>📅 Une réunion cosmique d’1h avec Karine (sans échappatoire)</li>
-      <li>🥐 Apporter les croissants tous les lundis pendant <strong>1 mois</strong></li>
+      <li><span id="bloups">🥐</span> Apporter les croissants tous les lundis pendant <strong>1 mois</strong></li>
       <li>🕊️ Devoir afficher un <em>pigeon mystique</em> en photo de profil pendant 7 jours</li>
     </ul>
 
@@ -153,76 +38,8 @@
     </blockquote>
 
     <button class="accept-button" title="Sans déconner, ne clique pas !">✨ J’accepte la Sainte Connerie</button>
-    <script>
-    const canvas = document.getElementById('fairy-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: window.innerWidth, y: window.innerHeight };
-
-    function resizeCanvas() {
-        // Utilise la taille réelle du document, pas seulement la fenêtre visible
-        const width = Math.max(
-            document.documentElement.scrollWidth,
-            document.body.scrollWidth,
-            document.documentElement.clientWidth,
-            window.innerWidth
-        );
-        const height = Math.max(
-            document.documentElement.scrollHeight,
-            document.body.scrollHeight,
-            document.documentElement.clientHeight,
-            window.innerHeight
-        );
-        canvas.width = width;
-        canvas.height = height;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    document.addEventListener('mousemove', e => {
-        // Calcule la position relative au canvas, même si le canvas est redimensionné
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-        mouse.x = x;
-        mouse.y = y;
-        for (let i = 0; i < 2; i++) {
-            particles.push({
-                x: x,
-                y: y,
-                vx: (Math.random()-0.5)*0.8,
-                vy: (Math.random()-0.5)*0.8,
-                alpha: 1,
-                size: 4 + Math.random()*3,
-                hue: 170 + Math.random()*40
-            });
-        }
-    });
-
-    function drawParticles() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        for (let i = particles.length-1; i >= 0; i--) {
-            let p = particles[i];
-            ctx.save();
-            ctx.globalAlpha = p.alpha;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, 2*Math.PI);
-            ctx.fillStyle = `hsl(${p.hue}, 90%, 70%)`;
-            ctx.shadowColor = `hsl(${p.hue}, 100%, 80%)`;
-            ctx.shadowBlur = 16;
-            ctx.fill();
-            ctx.restore();
-
-            p.x += p.vx;
-            p.y += p.vy;
-            p.alpha -= 0.001;
-            p.size *= 0.99;
-            if (p.alpha <= 0.02 || p.size < 1) particles.splice(i,1);
-        }
-        requestAnimationFrame(drawParticles);
-    }
-    drawParticles();
-    </script>
+    <script src="./js/canvas.js"></script>
+    <script src="./js/bloups.js"></script>
   </div>
 </body>
 </html>
