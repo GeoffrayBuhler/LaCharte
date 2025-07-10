@@ -102,6 +102,16 @@
       text-shadow: 0 0 8px #00ffff, 0 0 12px #00e0ff;
     }
 
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+
     @keyframes pulse {
       0%, 100% { box-shadow: 0 0 10px #00ffff; }
       50% { box-shadow: 0 0 20px #00ffff; }
@@ -113,6 +123,7 @@
   </style>
 </head>
 <body>
+      <canvas id="fairy-canvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:999;"></canvas>
   <div class="container">
     <h1 class="glow">🔷 Charte sacrée du DEV LOL 🔷</h1>
     <p><strong>Ô toi, nouvel élu(e) du sanctuaire du n’importe quoi,</strong><br>
@@ -142,7 +153,6 @@
     </blockquote>
 
     <button class="accept-button" title="Sans déconner, ne clique pas !">✨ J’accepte la Sainte Connerie</button>
-    <canvas id="fairy-canvas" style="position:fixed;top:0;left:0;pointer-events:none;z-index:999;"></canvas>
     <script>
     const canvas = document.getElementById('fairy-canvas');
     const ctx = canvas.getContext('2d');
@@ -205,8 +215,8 @@
 
             p.x += p.vx;
             p.y += p.vy;
-            p.alpha -= 0.018;
-            p.size *= 0.98;
+            p.alpha -= 0.001;
+            p.size *= 0.99;
             if (p.alpha <= 0.02 || p.size < 1) particles.splice(i,1);
         }
         requestAnimationFrame(drawParticles);
